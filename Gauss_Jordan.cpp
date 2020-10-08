@@ -2,12 +2,10 @@
 //今回テストに使用した式はGauss_Jordan_test.txtに置かれている
 #include <algorithm> // next_permutation
 #include <iomanip>   //setprecsion
-#include <iostream>  // cout, endl, cin
-#include <vector>    // vector
+#include <iostream>  // std::cout, std::endl, std::cin
+#include <vector>    // std::vector
 #include <fstream>     //fopen, fclose
 #include <cstdio>  // printf
-
-using namespace std;
 
 typedef long long ll;
 typedef long double ld;
@@ -17,11 +15,11 @@ typedef long double ld;
 ll line_number;                                        //行列の行数
 ll number;                                        //解の数
 ll ok = 0;                                             //入力の確認用
-vector<vector<ld>> input_matrix(100, vector<ld>(100, 0)); //行列の行データ
-vector<ld> input_ans_matrix(100, 0);                      //連立方程式の解
-vector<vector<ld>> check_input_matrix(100, vector<ld>(100, 0)); //check用行列の行データ
-vector<ld> check_input_ans_matrix(100, 0);                      //check用連立方程式の解
-vector<ll> all_check(1, 0);
+std::vector<std::vector<ld>> input_matrix(100, std::vector<ld>(100, 0)); //行列の行データ
+std::vector<ld> input_ans_matrix(100, 0);                      //連立方程式の解
+std::vector<std::vector<ld>> check_input_matrix(100, std::vector<ld>(100, 0)); //check用行列の行データ
+std::vector<ld> check_input_ans_matrix(100, 0);                      //check用連立方程式の解
+std::vector<ll> all_check(1, 0);
 ll error = 0; //対角上に０があるときエラー
 
 
@@ -51,8 +49,8 @@ int main()
     check();
     if (error != 0)
     {
-        cout << error;
-        cout << "実行時にエラーが起きたため強制終了します。" << endl;
+        std::cout << error;
+        std::cout << "実行時にエラーが起きたため強制終了します。" << std::endl;
         return 0;
     }
     R_Up();
@@ -65,7 +63,7 @@ int main()
 //設定
 void setting(void)
 {
-    cout << fixed << setprecision(5); //少数は5桁まで表示するように設定
+    std::cout << std::fixed << std::setprecision(5); //少数は5桁まで表示するように設定
 }
 
 //入力部
@@ -73,43 +71,43 @@ void input(void)
 {
     do
     {
-        cout << "行数の行数を入力してください。" << endl;
-        cin >> line_number;
-        cout << "求めたい解の個数を入力してください。" << endl;
-        cin >> number;
+        std::cout << "行数の行数を入力してください。" << std::endl;
+        std::cin >> line_number;
+        std::cout << "求めたい解の個数を入力してください。" << std::endl;
+        std::cin >> number;
         if(line_number < number)
         {
-            cout << "求めたい文字に対して与えられる式が少ないので計算できません。" << endl;
+            std::cout << "求めたい文字に対して与えられる式が少ないので計算できません。" << std::endl;
             error = 1;
             return;
         }
-        vector<vector<ld>> tmp_input_matrix(line_number, vector<ld>(line_number)); //一時保存用行列の行データ
-        vector<ld> tmp_input_ans_matrix(line_number);                              //一時保存用連立方程式の解
+        std::vector<std::vector<ld>> tmp_input_matrix(line_number, std::vector<ld>(line_number)); //一時保存用行列の行データ
+        std::vector<ld> tmp_input_ans_matrix(line_number);                              //一時保存用連立方程式の解
         for (ll i = 0; i < line_number; i++)
         {
             printf("%lld行目の値と解を入れてください。\n", i + 1);
             for (ll j = 0; j < line_number; j++)
             {
                 ld value;
-                cin >> value;
+                std::cin >> value;
                 tmp_input_matrix[i][j] = value;
             }
             ld value;
-            cin >> value;
+            std::cin >> value;
             tmp_input_ans_matrix[i] = value;
         }
-        cout << "これは確認です。入力があっていれば1を、間違っていれば0を入力してください。\n"
-             << "--------------------------------------------------------------" << endl;
+        std::cout << "これは確認です。入力があっていれば1を、間違っていれば0を入力してください。\n"
+             << "--------------------------------------------------------------" << std::endl;
         for (ll i = 0; i < line_number; i++)
         {
             for (ll j = 0; j < line_number; j++)
             {
-                cout << tmp_input_matrix[i][j] << " ";
+                std::cout << tmp_input_matrix[i][j] << " ";
             }
-            cout << " = " << tmp_input_ans_matrix[i] << endl;
+            std::cout << " = " << tmp_input_ans_matrix[i] << std::endl;
         }
-        cout << "--------------------------------------------------------------" << endl;
-        cin >> ok;
+        std::cout << "--------------------------------------------------------------" << std::endl;
+        std::cin >> ok;
         //あっていれば一時保存用からグローバル関数へ移行
         if (ok == 1)
         {
@@ -130,8 +128,8 @@ void input(void)
 //処理部
 void L_Down(void)
 {
-    vector<vector<ld>> tmp_input_matrix(line_number, vector<ld>(line_number)); //一時保存用行列の行データ
-    vector<ld> tmp_input_ans_matrix(line_number);                              //一時保存用連立方程式の解
+    std::vector<std::vector<ld>> tmp_input_matrix(line_number, std::vector<ld>(line_number)); //一時保存用行列の行データ
+    std::vector<ld> tmp_input_ans_matrix(line_number);                              //一時保存用連立方程式の解
     for (ll i = 0; i < line_number; i++)
     {
         for (ll j = 0; j < line_number; j++)
@@ -211,10 +209,10 @@ void output(void)
     {
         for (ll i = 0; i < line_number; i++)
         {
-            cout << "x" << i + 1 << " = " << input_ans_matrix[i] << endl;
+            std::cout << "x" << i + 1 << " = " << input_ans_matrix[i] << std::endl;
         }
     }
-    else cout << "解なし" << endl;
+    else std::cout << "解なし" << std::endl;
 }
 
 //確認用
@@ -224,9 +222,9 @@ void check(void)
     {
         for(ll j = 0;j < line_number;j++)
         {
-            cout << input_matrix[i][j] << "  ";
+            std::cout << input_matrix[i][j] << "  ";
         }
-        cout << " = " << input_ans_matrix[i] << endl;
+        std::cout << " = " << input_ans_matrix[i] << std::endl;
     }
 }
 
@@ -242,7 +240,7 @@ bool last_check(void)
             if (input_ans_matrix[j] >= 1000000000 || input_ans_matrix[j] <= -10000000000)
                 sum += 100000000;
                 sum += check_input_matrix[i][j] * input_ans_matrix[j];
-            cout << sum << endl;
+            std::cout << sum << std::endl;
         }
         //誤差が0.005より大きいときははじく(0にしないのは分数の計算時は必ずごく少数の誤差が出るため)
         if(sum - check_input_ans_matrix[i] < 0.005) flag++;
