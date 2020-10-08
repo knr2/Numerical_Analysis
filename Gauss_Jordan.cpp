@@ -237,8 +237,8 @@ bool last_check(void)
         ld sum = 0;
         for (ll j = 0; j < line_number; j++)
         {
-            if (input_ans_matrix[j] >= 1000000000 || input_ans_matrix[j] <= -10000000000)
-                sum += 100000000;
+            //あまりにも数値が大きいまたは、小さい場合は誤差により死んでいる可能性が高いためはじかれるようにする
+            if (input_ans_matrix[j] >= 1000000000 || input_ans_matrix[j] <= -10000000000) sum += 100000000;
                 sum += check_input_matrix[i][j] * input_ans_matrix[j];
             std::cout << sum << std::endl;
         }
