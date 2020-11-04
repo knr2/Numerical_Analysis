@@ -1,4 +1,3 @@
-//答えに対し式が足りないと計算不可（動作確認済み）
 //今回テストに使用した式はGauss_Jordan_test.txtに置かれている
 #include <algorithm> // next_permutation
 #include <iomanip>   //setprecsion
@@ -210,7 +209,7 @@ void output(void)
     {
         for (ll i = 0; i < line_number; i++)
         {
-            std::cout << char((ll)('a') + i) << " = " << input_ans_matrix[line_number - i - 1] << std::endl;
+            std::cout << char((ll)('a') + i) << " = " << input_ans_matrix[line_number - i - 1] << " ";
         }
     }
     else
