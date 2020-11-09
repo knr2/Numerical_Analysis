@@ -1,4 +1,10 @@
 //今回テストに使用した式はGauss_Jordan_test.txtに置かれている
+/*
+時間があるときに
+データから配列を作成するものを
+
+*/
+
 #include <algorithm> // next_permutation
 #include <iomanip>   //setprecsion
 #include <iostream>  // std::cout, std::endl, std::cin
