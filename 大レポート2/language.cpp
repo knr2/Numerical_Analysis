@@ -721,20 +721,30 @@ void Word_Probability()
                 probability[tmp] += 1;
             else
             {
-                probability[tmp] = 1;
-                key.push_back(tmp);
+                if (tmp[0] == ' ' || tmp[0] == 0x0a)
+                {
+                    word = 0;
+                }
+                else
+                {
+                    probability[tmp] = 1;
+                    key.push_back(tmp);
+                }
             }
 
             word = 0;
         }
-        if(word == 0)
+        else
         {
-            tmp = c_tmp;
-            word ++;
-            continue;
+            if (word == 0)
+            {
+                tmp = c_tmp;
+                word++;
+                continue;
+            }
+            //読み込んだものをcharからstringに
+            tmp.push_back(c_tmp);
         }
-        //読み込んだものをcharからstringに
-        tmp.push_back(c_tmp);
     }
 
     for (long long i = 0; i < key.size(); i++)
@@ -784,6 +794,7 @@ void Char_Sentence()
     long long count = 0;
     do
     {
+        count++;
         //乱数取得
         long long position = rand() % sum;
 
@@ -797,14 +808,13 @@ void Char_Sentence()
             if (tmp >= position)
             {
                 //出力
-                std::cout << char_probability[i].second;
+                std::cout << char_probability[i].second << (count != 130?"":".\n");
 
                 //ファイルに書き込み
                 fprintf(write_file, "%s", char_probability[i].second.c_str());
                 break;
             }
         }
-        count++;
     } while (count != 130);
 
     fclose(write_file);
@@ -834,6 +844,7 @@ void Pair_Sentence()
     long long count = 0;
     do
     {
+        count++;
         //乱数取得
         long long position = rand() % sum;
 
@@ -847,14 +858,13 @@ void Pair_Sentence()
             if (tmp >= position)
             {
                 //出力
-                std::cout << pair_probability[i].second;
+                std::cout << pair_probability[i].second << (count != 130?"":".\n");
 
                 //ファイルに書き込み
                 fprintf(write_file, "%s", pair_probability[i].second.c_str());
                 break;
             }
         }
-        count++;
     } while (count != 130);
 
     fclose(write_file);
@@ -884,6 +894,7 @@ void Tuple_Sentence()
     long long count = 0;
     do
     {
+        count++;
         //乱数取得
         long long position = rand() % sum;
 
@@ -897,14 +908,13 @@ void Tuple_Sentence()
             if (tmp >= position)
             {
                 //出力
-                std::cout << tuple_probability[i].second;
+                std::cout << tuple_probability[i].second << (count != 130?"":".\n");
 
                 //ファイルに書き込み
                 fprintf(write_file, "%s", tuple_probability[i].second.c_str());
                 break;
             }
         }
-        count++;
     } while (count != 130);
 
     fclose(write_file);
@@ -933,6 +943,7 @@ void Word_Sentence()
     long long count = 0;
     do
     {
+        count++;
         //乱数取得
         long long position = rand() % sum;
 
@@ -946,14 +957,16 @@ void Word_Sentence()
             if (tmp >= position)
             {
                 //出力
-                std::cout << word_probability[i].second << " ";
+                std::cout << word_probability[i].second << (count != 130?" ":".\n");
 
                 //ファイルに書き込み
-                fprintf(write_file, "%s", word_probability[i].second.c_str());
+                if(count != 130)
+                fprintf(write_file, "%s ", word_probability[i].second.c_str());
+                else
+                fprintf(write_file, "%s.\n", word_probability[i].second.c_str());
                 break;
             }
         }
-        count++;
     } while (count != 130);
 
     fclose(write_file);
