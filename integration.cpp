@@ -130,25 +130,25 @@ void trapezoid_method(void)
 void simpson_method(void)
 {
     y = 0;
-    for(long long i = 0;i <= integration_space * 2;i++)
+    for(long long i = 0;i <= integration_space;i++)
     {
-        long double tmp = section_min_one + i * moving_distance_one / 2.;
+        long double tmp = section_min_one + i * moving_distance_one;
         if(i == 0||i == integration_space)
             y += problem_one(tmp);
-        else if(i % 2 == 1)
-            y += 2 * problem_one(tmp);
         else if(i % 2 == 0)
+            y += 2 * problem_one(tmp);
+        else if(i % 2 == 1)
             y += 4 * problem_one(tmp);
         }
-    y *= moving_distance_one / 6.;
+    y *= moving_distance_one / 3.;
     
     fprintf(writing_file, "--------------------------------------------\n\t%lld分割した際のシンプソン法の解\n--------------------------------------------\n", integration_space);
     fprintf(writing_file, "%.10Lf\t\t\t\t|\t", y);
 
     y = 0;
-    for (long long i = 0; i <= integration_space * 2; i++)
+    for (long long i = 0; i <= integration_space; i++)
     {
-        long double tmp = section_min_two + i * moving_distance_two / 2.;
+        long double tmp = section_min_two + i * moving_distance_two;
         if (i == 0 || i == integration_space)
             y += problem_one(tmp);
         else if (i % 2 == 0)
@@ -156,7 +156,7 @@ void simpson_method(void)
         else if (i % 2 == 1)
             y += 4 * problem_two(tmp);
     }
-    y *= moving_distance_two / 6.;
+    y *= moving_distance_two / 3.;
 
     fprintf(writing_file, "%.10Lf\n\n\n", y);
 }
