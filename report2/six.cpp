@@ -23,7 +23,7 @@ std::vector<std::pair<long long, std::string>> pair_probability;
 
 int main(void)
 {
-    //Replacement();
+    Replacement();
     Pair_Probability();
     Pair_Sentence();
     return 0;

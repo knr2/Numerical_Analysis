@@ -12,20 +12,23 @@
 #include <cstdlib>   // exit, srand, rand
 #include <cmath>     // sin, cos, tan
 
+//文を計測しやすいよう下処理
 void Replacement(void);
 
-void Char_Probability(void);
+//確率測定
+void Word_Probability(void);
 
-void Char_Sentence(void);
+//文の作成
+void Word_Sentence(void);
 
 //確率計算用
-std::vector<std::pair<long long, std::string>> char_probability;
+std::vector<std::pair<long long, std::string>> word_probability;
 
 int main(void)
 {
     Replacement();
-    Char_Probability();
-    Char_Sentence();
+    Word_Probability();
+    Word_Sentence();
     return 0;
 }
 
@@ -77,8 +80,8 @@ void Replacement(void)
     fclose(write_file);
 }
 
-//1文字の出現頻度を計測
-void Char_Probability(void)
+//単語ごとに区別
+void Word_Probability()
 {
     FILE *read_file, *write_file;
     if ((read_file = fopen("Replacement.txt", "r")) == NULL)
@@ -95,64 +98,73 @@ void Char_Probability(void)
     //文字の一時保存
     char c_tmp;
     std::string tmp;
+    long long word = 0;
 
     //文字の出た回数を保存
     std::map<std::string, long long> probability;
 
+    //単語の種類の記憶
+    std::vector<std::string> key;
+
     while (fscanf(read_file, "%c", &c_tmp) != EOF)
     {
-        //読み込んだものをcharからstringに
-        tmp = c_tmp;
+        if (c_tmp == ' ' || c_tmp == 0x0a)
+        {
+            //単語の記憶
+            if (probability.count(tmp))
+                probability[tmp] += 1;
+            else
+            {
+                if (tmp[0] == ' ' || tmp[0] == 0x0a)
+                {
+                    word = 0;
+                }
+                else
+                {
+                    probability[tmp] = 1;
+                    key.push_back(tmp);
+                }
+            }
 
-        if (probability.count(tmp))
-            probability[tmp] += 1;
+            word = 0;
+        }
         else
-            probability[tmp] = 1;
+        {
+            if (word == 0)
+            {
+                tmp = c_tmp;
+                word++;
+                continue;
+            }
+            //読み込んだものをcharからstringに
+            tmp.push_back(c_tmp);
+        }
     }
 
-    tmp = 'a' - 1;
-    for (long long i = 0; i < 26; i++)
+    for (long long i = 0; i < key.size(); i++)
     {
-        //char型にして一文字進める
-        c_tmp = (char)(tmp[0] + 1);
 
         //char型をstring型に
-        tmp = c_tmp;
+        tmp = key[i];
 
-        //char_probabilityにpush
-        char_probability.push_back(std::make_pair(probability[tmp], tmp));
+        //word_probabilityにpush
+        word_probability.push_back(std::make_pair(probability[tmp], tmp));
     }
 
-    tmp = 'A' - 1;
-    for (long long i = 0; i < 26; i++)
+    std::sort(word_probability.begin(), word_probability.end());
+    std::reverse(word_probability.begin(), word_probability.end());
+
+    for (long long i = 0; i < word_probability.size(); i++)
     {
-        //char型にして一文字進める
-        c_tmp = (char)(tmp[0] + 1);
-
-        //char型をstring型に
-        tmp = c_tmp;
-
-        //char_probabilityにpush
-        char_probability.push_back(std::make_pair(probability[tmp], tmp));
-    }
-
-    char_probability.push_back(std::make_pair(probability[" "], (" ")));
-    char_probability.push_back(std::make_pair(probability["\n"], ("\n")));
-
-    std::sort(char_probability.begin(), char_probability.end());
-    std::reverse(char_probability.begin(), char_probability.end());
-
-    for (long long i = 0; i < char_probability.size(); i++)
-    {
-        fprintf(write_file, "%s\t%lld\n", char_probability[i].second.c_str(), char_probability[i].first);
+        std::cout << word_probability[i].second << "\t:" << word_probability[i].first << std::endl;
+        fprintf(write_file, "%s\t%lld\n", word_probability[i].second.c_str(), word_probability[i].first);
     }
 
     fclose(read_file);
     fclose(write_file);
 }
 
-//0重マルコフ過程による出力
-void Char_Sentence()
+void Word_Sentence()
 {
     //乱数取得
     std::srand(time(NULL));
@@ -167,35 +179,38 @@ void Char_Sentence()
 
     //文字数カウント
     long long sum = 0;
-    for (long long i = 0; i < char_probability.size(); i++)
+    for (long long i = 0; i < word_probability.size(); i++)
     {
-        sum += char_probability[i].first;
+        sum += word_probability[i].first;
     }
 
     long long count = 0;
     do
     {
+        count++;
         //乱数取得
         long long position = rand() % sum;
 
         //現在地を取得
         long long tmp = 0;
-        for (long long i = 0; i < char_probability.size(); i++)
+        for (long long i = 0; i < word_probability.size(); i++)
         {
-            tmp += char_probability[i].first;
+            tmp += word_probability[i].first;
 
             //乱数を超えたらその文字を出力
             if (tmp >= position)
             {
                 //出力
-                std::cout << char_probability[i].second;
+                std::cout << word_probability[i].second << (count != 130 ? " " : ".\n");
 
                 //ファイルに書き込み
-                fprintf(write_file, "%s", char_probability[i].second.c_str());
+                if (count != 130)
+                    fprintf(write_file, "%s ", word_probability[i].second.c_str());
+                else
+                    fprintf(write_file, "%s.\n", word_probability[i].second.c_str());
                 break;
             }
         }
-        count++;
     } while (count != 130);
 
     fclose(write_file);

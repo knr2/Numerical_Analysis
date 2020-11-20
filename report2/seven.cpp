@@ -23,7 +23,7 @@ std::vector<std::pair<long long, std::string>> tuple_probability;
 
 int main(void)
 {
-    //Replacement();
+    Replacement();
     Tuple_Probability();
     Tuple_Sentence();
     return 0;
@@ -264,8 +264,6 @@ void Tuple_Probability(void)
                 tmp.push_back(c_tmp_two);
                 tmp.push_back(c_tmp_three);
 
-                std::cout << tmp << std::endl;
-
                 //tuple_probabilityにpush
                 tuple_probability.push_back(std::make_pair(probability[tmp], tmp));
             }
@@ -408,9 +406,6 @@ void Tuple_Sentence()
             //乱数を超えたらその文字を出力
             if (tmp >= position)
             {
-                //出力
-                std::cout << tuple_probability[i].second;
-
                 //ファイルに書き込み
                 fprintf(write_file, "%s", tuple_probability[i].second.c_str());
                 break;
