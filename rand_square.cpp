@@ -43,7 +43,6 @@ int main(void)
             tmp /= 10;
         }
         std::cout << default_value << std::endl;
-        std::cin >> tmp;
     }
     return 0;
 }
