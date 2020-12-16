@@ -33,3 +33,7 @@ void setting(void)
 {
     std::cout << std::fixed << std::setprecision(10); //少数は10桁まで表示するように設定
 }
+
+/*
+g++ one.cpp -o test;./test
+*/
