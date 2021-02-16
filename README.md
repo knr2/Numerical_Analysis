@@ -35,4 +35,4 @@ x₁の式について、文字を適当に定めて、x₁を求めて更新を
 
 - [マルコフ](https://github.com/knr2/Numerical_Analysis/blob/main/report2/language.cpp)
 
-各文字列の出現回数を求め、自動で分を作成。
+各文字列の出現回数を求め、自動で文を作成。
